@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Attributes Modal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="modal">  
+   
+    <div class="modal-header">
+       
+        <h2>Search Attributes</h2>
+        <button class="close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+        <div class="category-tabs">
+            <button class="tab active" id = 'Personal' onclick="showCategory('Personal')">Personal (47)</button>
+            <button class="tab" id = 'Business' onclick="showCategory('Business')">Business</button>
+            <button class="tab" onclick="showCategory('Financial')" id="Financial">Financial</button>
+            <button class="tab" onclick="showCategory('Vehicle')" id="Vehicle">Vehicle</button>
+            <button class="tab" onclick="showCategory('Property')" id="Property">Property</button>
+            <button class="tab" onclick="showCategory('Location')" id="Location">Location</button> 
+        </div>
+        <input type="text" class="search-bar" placeholder="Search attributes..." onkeyup="filterAttributes()">
+        <table class="attributes-table">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Attribute</th>
+                    <th>Data Type</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>First Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>(47)</b></td>
+                    <td><span class="data-type var">Var</span></td>
+                    <td>Personal</td>
+                    <td>The individual's first name</td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Last Name  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>(47)</b></td>
+                    <td><span class="data-type var">Var</span></td>
+                    <td>Personal</td>
+                    <td>The individual's surname or family name</td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>(47)</b></td>
+                    <td><span class="data-type int">Int</span></td>
+                    <td>Personal, Business</td>
+                    <td>The individual's address</td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Mobile &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>(47)</b></td>
+                    <td><span class="data-type int">Int</span></td>
+                    <td>Personal, Business</td>
+                    <td>The individual's mobile number</td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Landline</td>
+                    <td><span class="data-type int">Int</span></td>
+                    <td>Personal, Business</td>
+                    <td>The individual's landline</td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Email</td>
+                    <td><span class="data-type var">Int</span></td>
+                    <td>Personal</td>
+                    <td>The individual's landline</td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Martial Status</td>
+                    <td><span class="data-type var">Int</span></td>
+                    <td>Personal</td>
+                    <td> </td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Postcode</td>
+                    <td><span class="data-type int">Int</span></td>
+                    <td>Personal</td>
+                    <td> </td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Residential Status</td>
+                    <td><span class="data-type var">Var</span></td>
+                    <td>Personal</td>
+                    <td> </td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Occupation Status</td>
+                    <td><span class="data-type var">Var</span></td>
+                    <td>Personal, Business</td>
+                    <td> </td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Date of Birth</td>
+                    <td><span class="data-type var">Var</span></td>
+                    <td>Personal</td>
+                    <td> </td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Parental Status</td>
+                    <td><span class="data-type var">Var</span></td>
+                    <td>Personal</td>
+                    <td> </td>
+                </tr>
+                <tr data-category="Personal">
+                    <td><input type="checkbox"></td>
+                    <td>Number of</td>
+                    <td><span class="data-type small">Small</span></td>
+                    <td>Personal</td>
+                    <td> </td>
+                </tr>
+                <!-- Add more rows as necessary -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button class="page-btn" onclick="prevPage()">Previous</button>
+            <span class="page-info">Page <span id="current-page">1</span> of <span id="total-pages">1</span></span>
+            <button class="page-btn" onclick="nextPage()">Next</button>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="selected-info">
+            <span>Selected (0): </span>
+            <span id="selected-attributes"></span>
+        </div>
+        <button class="search-btn">Search</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
