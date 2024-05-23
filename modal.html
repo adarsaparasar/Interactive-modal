@@ -5,6 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Attributes Modal</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    width: 100vw;
+    background-color: white; /* For browsers that do not support gradients */
+    background-image: linear-gradient(white,blue);
+}
+
+.modal {
+    width: 80%;
+    margin: 2em auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #fff;
+}
+
+.modal-body {
+    padding: 1em;
+}
+
+.category-tabs {
+    display: flex;
+    margin-bottom: 1em;
+}
+.category-tabs {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    font-size: 1em;
+}
+
+.tab.active {
+    border-bottom: 2px solid #007bff;
+}
+
+.search-bar {
+    width: 99%;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.attributes-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.attributes-table th, .attributes-table td {
+    padding: 0.75em;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.attributes-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.attributes-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.data-type.var {
+    color: #ff9800;
+}
+
+.data-type.int {
+    color: #2196f3;
+}
+
+.data-type.small {
+    color: #4caf50;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+}
+
+.page-btn {
+    background: none;
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.page-btn:disabled {
+    border-color: #ccc;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.modal-footer {
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ddd;
+}
+
+.selected-info {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.search-btn {
+    background-color: #007bff;
+    border: none;
+    padding: 0.5em 1em;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    </style>
 </head>
 <body>
 
@@ -145,7 +290,104 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js">
+    document.addEventListener('DOMContentLoaded', () => {
+    showCategory('Personal');
+    updateSelectedInfo();
+    updatePagination();
+});
+
+function showCategory(category) {
+     //bold the text
+     document.getElementById(category).style.fontWeight = "bold";
+    // Remove active class from all tabs
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+    // Add active class to the clicked tab
+    document.querySelector(`.tab:contains(${category})`).classList.add('active');
+    
+    // Filter rows based on the selected category
+    document.querySelectorAll('.attributes-table tbody tr').forEach(row => {
+        if (row.getAttribute('data-category').includes(category) || category === 'All') {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+   
+
+    updatePagination();
+}
+
+function filterAttributes() {
+    const searchInput = document.querySelector('.search-bar').value.toLowerCase();
+    const rows = document.querySelectorAll('.attributes-table tbody tr');
+    
+    rows.forEach(row => {
+        const attribute = row.children[1].textContent.toLowerCase();
+        const description = row.children[4].textContent.toLowerCase();
+        
+        if (attribute.includes(searchInput) || description.includes(searchInput)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // updatePagination();
+}
+
+function updateSelectedInfo() {
+    const selected = Array.from(document.querySelectorAll('.attributes-table tbody input:checked'))
+        .map(input => input.closest('tr').children[1].textContent)
+        .join(', ');
+    document.getElementById('selected-attributes').textContent = selected;
+    document.querySelector('.selected-info span').textContent = `Selected (${document.querySelectorAll('.attributes-table tbody input:checked').length}):`;
+}
+
+function updatePagination() {
+    const rows = document.querySelectorAll('.attributes-table tbody tr');
+    const rowsPerPage = 10;
+    const totalPages = Math.ceil(Array.from(rows).filter(row => row.style.display !== 'none').length / rowsPerPage);
+    document.getElementById('total-pages').textContent = totalPages;
+    
+    let currentPage = parseInt(document.getElementById('current-page').textContent);
+    currentPage = Math.max(1, Math.min(currentPage, totalPages));
+    document.getElementById('current-page').textContent = currentPage;
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    let count = 0;
+    rows.forEach((row, index) => {
+        if (row.style.display !== 'none') {
+            row.style.display = (count >= start && count < end) ? '' : 'none';
+            count++;
+        }
+    });
+
+    document.querySelector('.page-btn').disabled = currentPage <= 1;
+    document.querySelector('.page-btn:nth-of-type(2)').disabled = currentPage >= totalPages;
+}
+
+function prevPage() {
+    const currentPage = parseInt(document.getElementById('current-page').textContent);
+    document.getElementById('current-page').textContent = currentPage - 1;
+    
+}
+
+function nextPage() {
+    const currentPage = parseInt(document.getElementById('current-page').textContent);
+    document.getElementById('current-page').textContent = currentPage + 1;
+    
+}
+
+document.querySelector('.modal').addEventListener('change', updateSelectedInfo);
+document.querySelector('.close-btn').addEventListener('click', () => {
+    document.querySelector('.modal').style.display = 'none';
+});
+
+</script>
 
 </body>
 </html>
